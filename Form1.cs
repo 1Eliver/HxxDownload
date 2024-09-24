@@ -18,16 +18,18 @@ namespace HxxServerDownloader
 {
     public partial class Form1 : Form
 {
-    private DataManager dataManager;
+    public DataManager dataManager;
     private DownloadTool tool;
     private int taskSum = 1;
     private int[] taskProgresses;
+    public static Form1 Instance { get; set; }
 
     public Form1()
     {
         try
         {
             InitializeComponent();
+            Instance = this;
         }
         catch (Exception ex)
         {
@@ -164,7 +166,7 @@ namespace HxxServerDownloader
         }
     }
 
-        private void load_servers()
+        public void load_servers()
         {
             listBox1.Items.Clear();
             foreach (var server in dataManager.Data.Servers)
@@ -206,6 +208,15 @@ namespace HxxServerDownloader
             Directory.Delete(path, true);
             dataManager.Data.Servers.Remove(dataManager.Data.Servers[listBox1.SelectedIndex]);
             load_servers();
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            this.Invoke(new Action(() =>
+            {
+                var add = new AddHadServerForm();
+                add.Show();
+            }));
         }
     }
 }
